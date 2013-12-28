@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-	<meta http-equiv="Refresh" content="10"> 
+
     <title>mobiForge geolocation map API demo</title>
     <style>
       body,html {height:100%}
@@ -16,6 +16,7 @@
 	
     <script>
       var map; 
+	  var markersArray = [];
 	  var currPosition;
       function initGeolocation() {
         if (navigator && navigator.geolocation) {
@@ -27,6 +28,32 @@
           console.log('Geolocation is not supported');
         }
       }
+	function clearOverlays() {
+	  for (var i = 0; i < markersArray.length; i++ ) {
+	    markersArray[i].setMap(null);
+	  }
+	  markersArray.length = 0;
+	}
+
+	  function updateMarkers() {
+	        $.getJSON( "test.php", function( data ) {
+			  var items = [];
+			  var i = 0;
+			  $.each( data, function( key, val ) {
+				alert(key);
+				var myLatlng = new google.maps.LatLng(currPosition.coords.latitude, currPosition.coords.longitude);
+				var marker = new google.maps.Marker({
+				      position: myLatlng,
+				      map: map,
+				      title: 'Hello World!'
+				  });
+				markersArray[i++] = marker;
+				});
+				 
+				
+			});
+	  	
+	  }
      
       function errorCallback() {}
 
@@ -47,7 +74,7 @@
       function successCallback(position) {
 	    updatePosition(position);
         var myLatlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-		alert("New location: lat: " + currPosition.coords.latitude +  " long: " + currPosition.coords.longitude);
+		//alert("New location: lat: " + currPosition.coords.latitude +  " long: " + currPosition.coords.longitude);
 		sendUpdates();
 		
         if(map == undefined) {
