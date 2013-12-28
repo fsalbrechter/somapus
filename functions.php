@@ -1,7 +1,24 @@
 <?
 $db = mysql_connect("localhost", "wgenstar_somapus", "3SqIawG3OFamTs9Gj");
 mysql_select_db ("wgenstar_somapus", $db); 
-  
+ 
+
+ function get_user_id() {
+
+  // user has a cookie?
+    $user_id = $_COOKIE["user_id"];
+
+    if(!$user_id) {
+      // if not, set a cookie
+      $user_id = uniqid();
+      setcookie("user_id", $user_id, time() +60*60*24*7*365);
+    }
+    
+
+  // return ID
+    return $user_id;
+
+  } 
  
    function f($hvad) {  
         #return mb_convert_case($hvad, MB_CASE_TITLE);  
