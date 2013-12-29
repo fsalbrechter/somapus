@@ -6,7 +6,7 @@ function get_user_id() {
         setcookie("user_id", $user_id, time()+60*60*24*7*365);
         $_COOKIE['user_id'] = $user_id;
     }
-    echo $_COOKIE['user_id'];
+    return $_COOKIE['user_id'];
 }  
    function f($hvad) {  
         #return mb_convert_case($hvad, MB_CASE_TITLE);  

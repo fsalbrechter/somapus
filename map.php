@@ -1,4 +1,4 @@
-<? require ("functions.php"); ?>
+<? require ("functions.php"); $userId = get_user_id();  ?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -15,7 +15,7 @@
   <script src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
 	<script src="js/geolocationmarker-compiled.js"></script>
   <script>
-    var userId = "<? echo get_user_id(); ?>"
+    var userId = "<? echo $userId ?>"
     var map; 
 	  var markersArray = [];
 	  var currPosition;
@@ -28,6 +28,14 @@
             timeout:60000,
             maximumAge:0
           });
+          
+          var myOptions = {
+            zoom: 15,
+            styles: mapStyles,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+          }
+          map = new google.maps.Map(document.getElementById("map"), myOptions);
+		      var GeoMarker = new GeolocationMarker(map);
           
           setInterval(function(){ clearOverlays(); updateMarkers(); },5000);
           
@@ -83,23 +91,19 @@
 
     function successCallback(position) {
 	    updatePosition(position);
-        var myLatlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-		//alert("New location: lat: " + currPosition.coords.latitude +  " long: " + currPosition.coords.longitude);
-		sendUpdates();
+      var myLatlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+		  sendUpdates();
 		
-        if(map == undefined) {
-          var myOptions = {
-            zoom: 15,
-            styles: mapStyles,
-            center: myLatlng,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-          }
-          map = new google.maps.Map(document.getElementById("map"), myOptions);
-		  var GeoMarker = new GeolocationMarker(map);
+      if(map == undefined) {
+        var myOptions = {
+          zoom: 15,
+          styles: mapStyles,
+          center: myLatlng,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
         }
-        else {
-		  map.panTo(myLatlng);
-		}
+        map = new google.maps.Map(document.getElementById("map"), myOptions);
+	      var GeoMarker = new GeolocationMarker(map);
+      }
     }
 
 
