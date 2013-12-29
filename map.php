@@ -8,6 +8,7 @@
       #map {width:100%;height:100%;}
     </style>
 	<script src="https://www.google.com/jsapi"></script>
+  <script src="mapstyle.js"></script>
 	<script>
     google.load('jquery', '1.3.1');
 	</script>
@@ -89,6 +90,7 @@
         if(map == undefined) {
           var myOptions = {
             zoom: 15,
+            styles: mapStyles,
             center: myLatlng,
             mapTypeId: google.maps.MapTypeId.ROADMAP
           }
