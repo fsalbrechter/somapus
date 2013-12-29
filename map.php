@@ -29,13 +29,7 @@
             maximumAge:0
           });
           
-          var myOptions = {
-            zoom: 15,
-            styles: mapStyles,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-          }
-          map = new google.maps.Map(document.getElementById("map"), myOptions);
-		      var GeoMarker = new GeolocationMarker(map);
+          
           
           setInterval(function(){ clearOverlays(); updateMarkers(); },5000);
           
@@ -62,7 +56,19 @@
 			  var i = 0;
 			  $.each( data, function(key, val) {
 				var myLatlng = new google.maps.LatLng(val.X, val.Y);
-				var marker = new google.maps.Marker({
+        if(map == undefined) {
+                var myOptions = {
+                  zoom: 15,
+                  styles: mapStyles,
+                  center: myLatlng,
+                  mapTypeId: google.maps.MapTypeId.ROADMAP
+                }
+                map = new google.maps.Map(document.getElementById("map"), myOptions);
+                      var GeoMarker = new GeolocationMarker(map);
+              }
+        
+        
+        var marker = new google.maps.Marker({
 				      position: myLatlng,
 				      map: map,
 				      title: key
