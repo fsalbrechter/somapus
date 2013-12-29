@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <title>So map us</title>
+    <style>
+      body,html {height:100%; padding:0; margin:0;}
+      #map {width:100%;height:100%;}
+    </style>
+	<script src="https://www.google.com/jsapi"></script>
+  <script src="mapstyle.js"></script>
+	<script>
+	google.load('jquery', '1.3.1');
+	</script>
+    <script src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
+	<script src="js/geolocationmarker-compiled.js"></script>
+	
+    <script>
+      var map; 
+	  var markersArray = [];
+	  var currPosition;
+      function initGeolocation() {
+        if (navigator && navigator.geolocation) {
+        var watchId = navigator.geolocation.watchPosition(successCallback, 
+                                                          errorCallback,
+                                                          {enableHighAccuracy:true,timeout:60000,maximumAge:0});
+
+        } else {
+          console.log('Geolocation is not supported');
+        }
+      }
+	function clearOverlays() {
+	  for (var i = 0; i < markersArray.length; i++ ) {
+	    markersArray[i].setMap(null);
+	  }
+	  markersArray.length = 0;
+	}
+
+	  function updateMarkers() {
+	        $.getJSON( "test.php", function( data ) {
+			  var items = [];
+			  var i = 0;
+			  $.each( data, function( key, val ) {
+				alert(key);
+				var myLatlng = new google.maps.LatLng(currPosition.coords.latitude, currPosition.coords.longitude);
+				var marker = new google.maps.Marker({
+				      position: myLatlng,
+				      map: map,
+				      title: 'Hello World!'
+				  });
+				markersArray[i++] = marker;
+				});
+				 
+				
+			});
+	  	
+	  }
+     
+      function errorCallback(e) {
+          console.log(e)
+
+      }
+
+	  function updatePosition( position ){
+	    currPosition = position;
+	  }
+	  function sendUpdates() {
+			var lat = currPosition.coords.latitude;
+	        var lng = currPosition.coords.longitude;
+	        jQuery.ajax({
+	            type: "POST", 
+	            url:  "updatelocation.php", 
+	            data: 'x='+lat+'&y='+lng, 
+	            cache: false
+	        });	
+    	}
+
+      function successCallback(position) {
+	    updatePosition(position);
+        var myLatlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+		//alert("New location: lat: " + currPosition.coords.latitude +  " long: " + currPosition.coords.longitude);
+		sendUpdates();
+		
+        if(map == undefined) {
+          var myOptions = {
+            zoom: 15,
+            panControl: false, 
+            zoomControl: false, 
+            streetViewControl: false, 
+            overviewMapControl: false,
+            mapTypeControl: false,
+            styles: mapStyles,
+            center: myLatlng,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+          }
+          map = new google.maps.Map(document.getElementById("map"), myOptions);
+		  var GeoMarker = new GeolocationMarker(map);
+        }
+        else {
+		  map.panTo(myLatlng);
+		}
+    }
+
+
+    </script>
+  </head>
+  <body onload="javascript:initGeolocation()">
+    <div id="map">
+    </div>
+  </body>
+</html>
