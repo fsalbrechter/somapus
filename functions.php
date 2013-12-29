@@ -1,6 +1,6 @@
-<?
-$db = mysql_connect("localhost", "wgenstar_somapus", "3SqIawG3OFamTs9Gj");
-mysql_select_db ("wgenstar_somapus", $db); 
+<?php
+$db = mysql_connect("localhost", "root", "password");
+mysql_select_db ("somapus", $db); 
  
 
  function get_user_id() {

@@ -1,4 +1,4 @@
-<?
+<?php
 
 $encoding = "utf-8";
 require ("functions.php");
@@ -10,9 +10,12 @@ $user = "111thisuser111";
 $lat = "37.7913155";
 $lon = "-122.3926051";
 
-$sql = "replace into somapus (updated, room, location, user) values (now(), '$room', GeomFromText('POINT($lat $lon)'), '$user')";
-echo $sql;
-mysql_query($sql);
 
+$query = sprintf("REPLACE somapus (updated, room, location, user) values (now(), '%s', GeomFromText('POINT($lat $lon)'), '%s')",
+    mysql_real_escape_string($room),
+    mysql_real_escape_string($user));
+
+echo $query;
+mysql_query($query);
 
 ?>

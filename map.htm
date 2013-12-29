@@ -1,42 +1,41 @@
 <!DOCTYPE html>
 <html>
   <head>
-
-    <title>mobiForge geolocation map API demo</title>
+    <title>So map us!</title>
     <style>
       body,html {height:100%}
       #map {width:100%;height:100%;}
     </style>
 	<script src="https://www.google.com/jsapi"></script>
 	<script>
-	google.load('jquery', '1.3.1');
+    google.load('jquery', '1.3.1');
 	</script>
-    <script src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
+  <script src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
 	<script src="js/geolocationmarker-compiled.js"></script>
-	
-    <script>
-      var map; 
+  <script>
+    var map; 
 	  var markersArray = [];
 	  var currPosition;
-      function initGeolocation() {
-        if (navigator && navigator.geolocation) {
+    
+    function initGeolocation() {
+      if (navigator && navigator.geolocation) {
         var watchId = navigator.geolocation.watchPosition(successCallback, 
-                                                          errorCallback,
-                                                          {enableHighAccuracy:true,timeout:60000,maximumAge:0});
-
+          errorCallback,
+          {enableHighAccuracy:true,timeout:60000,maximumAge:0});
         } else {
           console.log('Geolocation is not supported');
         }
       }
-	function clearOverlays() {
-	  for (var i = 0; i < markersArray.length; i++ ) {
-	    markersArray[i].setMap(null);
-	  }
-	  markersArray.length = 0;
-	}
+    
+    function clearOverlays() {
+      for (var i = 0; i < markersArray.length; i++ ) {
+        markersArray[i].setMap(null);
+      }
+      markersArray.length = 0;
+    }
 
 	  function updateMarkers() {
-	        $.getJSON( "test.php", function( data ) {
+	    $.getJSON( "test.php", function( data ) {
 			  var items = [];
 			  var i = 0;
 			  $.each( data, function( key, val ) {
@@ -48,19 +47,18 @@
 				      title: 'Hello World!'
 				  });
 				markersArray[i++] = marker;
-				});
-				 
-				
+				});	 
 			});
 	  	
 	  }
      
-      function errorCallback() {}
+    function errorCallback() {}
 
 	  function updatePosition( position ){
 	    currPosition = position;
 	  }
-	  function sendUpdates() {
+	  
+    function sendUpdates() {
 			var lat = currPosition.coords.latitude;
 	        var lng = currPosition.coords.longitude;
 	        jQuery.ajax({
