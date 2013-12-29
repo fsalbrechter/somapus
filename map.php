@@ -93,6 +93,7 @@
     </script>
   </head>
   <body onload="javascript:initGeolocation()">
+    Welcome!
     <div id="map">
     </div>
   </body>
