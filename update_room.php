@@ -1,7 +1,11 @@
 <?php
 
+$db = mysql_connect("localhost", "wgenstar_somapus", "3SqIawG3OFamTs9Gj");
+mysql_select_db ("wgenstar_somapus", $db); 
+
 $encoding = "utf-8";
-require ("functions.php");
+
+
 $room = "moflo";
 $user = $_GET["userId"];
 $lat = $_GET["lat"];

@@ -1,6 +1,4 @@
-<?php
-$db = mysql_connect("localhost", "root", "password");
-mysql_select_db ("somapus", $db); 
+<? 
 
 function get_user_id() {
     if(!isset($_COOKIE['user_id'])) {
@@ -9,8 +7,7 @@ function get_user_id() {
         $_COOKIE['user_id'] = $user_id;
     }
     echo $_COOKIE['user_id'];
-} 
- 
+}  
    function f($hvad) {  
         #return mb_convert_case($hvad, MB_CASE_TITLE);  
         return $hvad;

@@ -1,8 +1,8 @@
 <?php
 $encoding = "utf-8";
 
-$db = mysql_connect("localhost", "root", "password");
-mysql_select_db ("somapus", $db);
+$db = mysql_connect("localhost", "wgenstar_somapus", "3SqIawG3OFamTs9Gj");
+mysql_select_db ("wgenstar_somapus", $db); 
 
 $room = "moflo";
 
