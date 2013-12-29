@@ -1,3 +1,4 @@
+<? require ("functions.php"); ?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -13,19 +14,26 @@
   <script src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
 	<script src="js/geolocationmarker-compiled.js"></script>
   <script>
+    var userId = "<? echo get_user_id(); ?>"
     var map; 
 	  var markersArray = [];
 	  var currPosition;
     
     function initGeolocation() {
       if (navigator && navigator.geolocation) {
-        var watchId = navigator.geolocation.watchPosition(successCallback, 
-          errorCallback,
-          {enableHighAccuracy:true,timeout:60000,maximumAge:0});
-        } else {
+        var watchId = navigator.geolocation.watchPosition(successCallback, errorCallback,
+          {
+            enableHighAccuracy:true,
+            timeout:60000,
+            maximumAge:0
+          });
+          
+          setInterval(function(){ clearOverlays(); updateMarkers(); },5000);
+          
+      } else {
           console.log('Geolocation is not supported');
-        }
       }
+    }
     
     function clearOverlays() {
       for (var i = 0; i < markersArray.length; i++ ) {
@@ -35,21 +43,24 @@
     }
 
 	  function updateMarkers() {
-	    $.getJSON( "test.php", function( data ) {
+      var data = {
+          SomeID: "18",
+          Utc: null,
+          Flags: "324"
+      };
+	    $.getJSON( "show_room.php", data, function(data) {
 			  var items = [];
 			  var i = 0;
-			  $.each( data, function( key, val ) {
-				alert(key);
-				var myLatlng = new google.maps.LatLng(currPosition.coords.latitude, currPosition.coords.longitude);
+			  $.each( data, function(key, val) {
+				var myLatlng = new google.maps.LatLng(val.X, val.Y);
 				var marker = new google.maps.Marker({
 				      position: myLatlng,
 				      map: map,
-				      title: 'Hello World!'
+				      title: key
 				  });
 				markersArray[i++] = marker;
 				});	 
-			});
-	  	
+			});	
 	  }
      
     function errorCallback() {}
@@ -60,16 +71,16 @@
 	  
     function sendUpdates() {
 			var lat = currPosition.coords.latitude;
-	        var lng = currPosition.coords.longitude;
-	        jQuery.ajax({
-	            type: "POST", 
-	            url:  "updatelocation.php", 
-	            data: 'x='+lat+'&y='+lng, 
-	            cache: false
-	        });	
-    	}
+	    var lng = currPosition.coords.longitude;
+      
+      $.ajax({
+        type: "GET",
+        url: "update_room.php",
+        data: { userId: userId, lat: lat, lng: lng }
+      });
+    }
 
-      function successCallback(position) {
+    function successCallback(position) {
 	    updatePosition(position);
         var myLatlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 		//alert("New location: lat: " + currPosition.coords.latitude +  " long: " + currPosition.coords.longitude);
@@ -93,7 +104,7 @@
     </script>
   </head>
   <body onload="javascript:initGeolocation()">
-    Welcome!
+    Welcome  <? echo get_user_id(); ?>!
     <div id="map">
     </div>
   </body>
