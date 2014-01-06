@@ -4,8 +4,8 @@
   <head>
     <title>So map us!</title>
     <style>
-      body,html {height:100%}
-      #map {width:100%;height:100%;}
+      body,html {height:100%; padding:0; margin:0;}
+      #map {width:100%;height:100%;}    
     </style>
 	<script src="https://www.google.com/jsapi"></script>
   <script src="mapstyle.js"></script>
@@ -28,9 +28,6 @@
             timeout:60000,
             maximumAge:0
           });
-          
-          
-          
           setInterval(function(){ clearOverlays(); updateMarkers(); },5000);
           
       } else {
@@ -57,14 +54,19 @@
 			  $.each( data, function(key, val) {
 				var myLatlng = new google.maps.LatLng(val.X, val.Y);
         if(map == undefined) {
-                var myOptions = {
-                  zoom: 15,
-                  styles: mapStyles,
-                  center: myLatlng,
-                  mapTypeId: google.maps.MapTypeId.ROADMAP
-                }
-                map = new google.maps.Map(document.getElementById("map"), myOptions);
-                      var GeoMarker = new GeolocationMarker(map);
+          var myOptions = {
+               zoom: 15,
+               panControl: false, 
+               zoomControl: false, 
+               streetViewControl: false, 
+               overviewMapControl: false,
+               mapTypeControl: false,
+               styles: mapStyles,
+               center: myLatlng,
+               mapTypeId: google.maps.MapTypeId.ROADMAP
+             }
+             map = new google.maps.Map(document.getElementById("map"), myOptions);
+   		      var GeoMarker = new GeolocationMarker(map);
               }
         
         
@@ -102,13 +104,18 @@
 		
       if(map == undefined) {
         var myOptions = {
-          zoom: 15,
-          styles: mapStyles,
-          center: myLatlng,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        }
-        map = new google.maps.Map(document.getElementById("map"), myOptions);
-	      var GeoMarker = new GeolocationMarker(map);
+             zoom: 15,
+             panControl: false, 
+             zoomControl: false, 
+             streetViewControl: false, 
+             overviewMapControl: false,
+             mapTypeControl: false,
+             styles: mapStyles,
+             center: myLatlng,
+             mapTypeId: google.maps.MapTypeId.ROADMAP
+           }
+           map = new google.maps.Map(document.getElementById("map"), myOptions);
+ 		      var GeoMarker = new GeolocationMarker(map);
       }
     }
 
@@ -116,7 +123,7 @@
     </script>
   </head>
   <body onload="javascript:initGeolocation()">
-    Welcome  <? echo get_user_id(); ?>!
+    <div style="position:absolute; z-index:1000;">Welcome  <? echo get_user_id(); ?>!</div>
     <div id="map">
     </div>
   </body>
